@@ -1,2 +1,3 @@
 # Neural-Network
-Neural Network Project
+
+Creating a neural network from scratch
