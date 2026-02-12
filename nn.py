@@ -34,15 +34,12 @@ we sometimes see the Wx Form where it might be written as 5 x 4.
 
 
 import numpy as np
+import nnfs 
+import matplotlib as plt
+from nnfs.datasets import spiral_data
 
-np.random.seed(0)
-
-X = [[1,2,3,2.5],
-     [2.0,5.0,-1.0,2.0],
-     [-1.5,2.7,3.3,-0.8]]
-
-
-class Layer_dense:
+# nnfs.init()
+class LayerDense:
     def __init__(self, n_inputs, n_neurons) -> None:
         self.weights = 0.10 * np.random.randn(n_inputs, n_neurons)
         self.biases = np.zeros((1, n_neurons))
@@ -50,11 +47,20 @@ class Layer_dense:
     def forward(self, inputs) -> None:
         self.output = np.dot(inputs, self.weights) + self.biases
 
+class ActivationReLU:
+    def forward(self, inputs):
+        self.output = np.maximum(0, inputs)
+    
 
-layer1 = Layer_dense(4, 5)
-layer2 = Layer_dense(5, 2)
+np.random.seed(0)
 
+X, y = spiral_data(100, 3)
+
+
+layer1 = LayerDense(2, 5)
+activation = ActivationReLU()
 layer1.forward(X)
-layer2.forward(layer1.output)
+activation.forward(layer1.output)
 
-print(layer2.output)
+print(activation.output)
+
