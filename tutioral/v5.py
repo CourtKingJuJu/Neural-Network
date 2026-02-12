@@ -16,7 +16,7 @@ part of the up slope. then the second pair represents the peak, and then the dow
 In other works it one neuron set could set an activation point and a deactivation point. 
 '''
 inputs = []
-outputs = []
+output = []
 # Created the ReLU activation function 
 for i in inputs:
     output.append(max(0, i))
