@@ -31,14 +31,13 @@ and then it updates the line accordingly, this helps generalization and reduces 
 we get to see how the weight matrix is classes in sample (in this case 4) by the amount of neurons in the layer. thi is XW + b form
 we sometimes see the Wx Form where it might be written as 5 x 4. 
 """
-
-
+import nnfs
 import numpy as np
-import nnfs 
-import matplotlib as plt
 from nnfs.datasets import spiral_data
 
-# nnfs.init()
+np.random.seed(0)
+nnfs.init()
+
 class LayerDense:
     def __init__(self, n_inputs, n_neurons) -> None:
         self.weights = 0.10 * np.random.randn(n_inputs, n_neurons)
@@ -50,17 +49,24 @@ class LayerDense:
 class ActivationReLU:
     def forward(self, inputs):
         self.output = np.maximum(0, inputs)
-    
 
-np.random.seed(0)
+class ActivationSoftMax:
+    def forward(self, inputs):
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
+        probabilites = exp_values / np.sum(exp_values, axis=1, keepdims=True)
+        self.output = probabilites
 
-X, y = spiral_data(100, 3)
 
+X, y = spiral_data(samples=100, classes=3)
 
-layer1 = LayerDense(2, 5)
-activation = ActivationReLU()
-layer1.forward(X)
-activation.forward(layer1.output)
+dense1 = LayerDense(2, 3)
+activation1 = ActivationReLU()
 
-print(activation.output)
+dense2 = LayerDense(3, 3)
+activation2 = ActivationSoftMax()
+
+dense1.forward(X)
+activation1.forward(dense1.output)
+dense2.forward(activation1.output)
+activation2.forward(dense2.output)
 
